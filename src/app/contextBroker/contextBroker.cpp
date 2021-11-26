@@ -165,6 +165,7 @@ char            reqMutexPolicy[16];
 int             writeConcern;
 unsigned int    cprForwardLimit;
 int             subCacheInterval;
+int             maxFileSize = 5096;
 
 char                      notificationMode[512];  // FIXME P5: this will limit the number of service that can have a reserved queue...
 char                      notifFlowControl[64];
@@ -1244,14 +1245,14 @@ int main(int argC, char* argV[])
     // that all the buffer is initialized with \0, thus avoiding the problem, although it would
     // be better to fix loadFile()
     // See issue https://github.com/telefonicaid/fiware-orion/issues/3925 for more detail
-    char* httpsPrivateServerKey = (char*) calloc(2048, 1);
-    char* httpsCertificate      = (char*) calloc(2048, 1);
+    char* httpsPrivateServerKey = (char*) calloc(maxFileSize, 1);
+    char* httpsCertificate      = (char*) calloc(maxFileSize, 1);
 
-    if (loadFile(httpsKeyFile, httpsPrivateServerKey, 2048) != 0)
+    if (loadFile(httpsKeyFile, httpsPrivateServerKey, maxFileSize) != 0)
     {
       LM_X(1, ("Fatal Error (loading private server key from '%s')", httpsKeyFile));
     }
-    if (loadFile(httpsCertFile, httpsCertificate, 2048) != 0)
+    if (loadFile(httpsCertFile, httpsCertificate, maxFileSize) != 0)
     {
       LM_X(1, ("Fatal Error (loading certificate from '%s')", httpsCertFile));
     }
